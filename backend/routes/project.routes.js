@@ -24,4 +24,9 @@ router.put('/add-user',
         .custom((users) => users.every(user => typeof user === 'string')).withMessage('Each user must be a string'),
     projectController.addUserToProject
 )
+
+router.get('/get-project/:projectId',
+    authMiddleWare.authUser,
+    projectController.getProjectById
+)
 export default router;
