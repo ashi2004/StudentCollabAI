@@ -26,6 +26,74 @@ export const createProject = async ({
     return project;
 
 }
-// export default {
-//     createProject
-// }
+
+
+export const getAllProjectByUserId = async ({ userId }) => {
+    if (!userId) {
+        throw new Error('UserId is required')
+    }
+
+    const allUserProjects = await projectModel.find({
+        users: userId
+    })
+
+    return allUserProjects
+}
+
+
+export const addUsersToProject = async ({ projectId, users, userId }) => {
+
+    if (!projectId) {
+        throw new Error("projectId is required")
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+        throw new Error("Invalid projectId")
+    }
+
+    if (!users) {
+        throw new Error("users are required")
+    }
+
+    if (!Array.isArray(users) || users.some(userId => !mongoose.Types.ObjectId.isValid(userId))) {
+        throw new Error("Invalid userId(s) in users array")
+    }
+
+    if (!userId) {
+        throw new Error("userId is required")
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error("Invalid userId")
+    }
+
+
+//this code will check whether the logged in user is part of the project or not before adding other users to that project
+    const project = await projectModel.findOne({
+        _id: projectId,
+        users: userId
+    })
+
+    console.log(project)
+
+    if (!project) {
+        throw new Error("User not belong to this project")
+    }
+//this code will add users to the project if not already added
+    const updatedProject = await projectModel.findOneAndUpdate({
+        _id: projectId
+    }, {
+        $addToSet: {
+            users: {
+                $each: users
+            }
+        }
+    }, {
+        new: true
+    })
+
+    return updatedProject
+
+
+
+}
