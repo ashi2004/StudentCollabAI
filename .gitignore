@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# environment files
+.env
+*/.env  # also ignores .env inside subfolders like backend/.env or frontend/.env
+
+# build outputs
+dist/
+build/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# system files
+.DS_Store
+Thumbs.db
