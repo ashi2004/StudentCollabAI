@@ -18,7 +18,7 @@ export const createProject = async ({
         });
     } catch (error) {
         if (error.code === 11000) {
-            throw new Error('Project name already exists');
+            throw new Error('Project name already exists'); //For duplicate project creation error
         }
         throw error;
     }
