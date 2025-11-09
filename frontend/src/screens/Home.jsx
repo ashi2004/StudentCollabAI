@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 const Home = () => {
 
     const { user } = useContext(UserContext)
-    const [ isModalOpen, setIsModalOpen ] = useState(false)
+    const [ isModalOpen, setIsModalOpen ] = useState(false) //popup or dialog box state
     const [ projectName, setProjectName ] = useState(null)
     const [ project, setProject ] = useState([])
 
@@ -27,7 +27,7 @@ const Home = () => {
                 console.log(error)
             })
     }
-
+    // Fetch all projects from the backend when the component mounts
     useEffect(() => {
         axios.get('/projects/all').then((res) => {
             setProject(res.data.projects)
@@ -40,14 +40,16 @@ const Home = () => {
 
     return (
         <main className='p-4'>
-            <div className="projects flex flex-wrap gap-3">
+                
+            <div className="projects flex flex-wrap gap-3">    
+                {/* New Project Button when clicked will open a modal to create new project */}        
                 <button
                     onClick={() => setIsModalOpen(true)}
                     className="project p-4 border border-slate-300 rounded-md">
                     New Project
                     <i className="ri-link ml-2"></i>
                 </button>
-
+              {/* Project name and collaborator card code which when clicked navigates to that project page */}
                 {
                     project.map((project) => (
                         <div key={project._id}
@@ -73,6 +75,12 @@ const Home = () => {
 
             </div>
 
+
+           {/* When you click “New Project”:
+           setIsModalOpen(true) → shows this modal.
+           You type a name → updates projectName.
+           Click “Create” → sends POST request to backend (/projects/create).
+           On success → modal closes via setIsModalOpen(false). */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-md shadow-md w-1/3">
