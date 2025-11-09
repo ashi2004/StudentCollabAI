@@ -27,7 +27,7 @@ const Home = () => {
                 console.log(error)
             })
     }
-//fetch all projects of logged in user
+
     useEffect(() => {
         axios.get('/projects/all').then((res) => {
             setProject(res.data.projects)

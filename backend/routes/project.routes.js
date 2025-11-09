@@ -1,15 +1,15 @@
-import {Router} from 'express';
-import {body} from 'express-validator';
+import { Router } from 'express';
+import { body } from 'express-validator';
 import * as projectController from '../controllers/project.controller.js';
 import * as authMiddleWare from '../middleware/auth.middleware.js';
 
-const router=Router();
+const router = Router();
+
 
 router.post('/create',
     authMiddleWare.authUser,
     body('name').isString().withMessage('Name is required'),
     projectController.createProject
-
 )
 
 router.get('/all',
@@ -29,4 +29,13 @@ router.get('/get-project/:projectId',
     authMiddleWare.authUser,
     projectController.getProjectById
 )
+
+router.put('/update-file-tree',
+    authMiddleWare.authUser,
+    body('projectId').isString().withMessage('Project ID is required'),
+    body('fileTree').isObject().withMessage('File tree is required'),
+    projectController.updateFileTree
+)
+
+
 export default router;

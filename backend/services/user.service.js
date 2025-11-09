@@ -23,7 +23,7 @@ export const createUser = async ({
 
 export const getAllUsers = async ({ userId }) => {
     const users = await userModel.find({
-        _id: { $ne: userId }
+        _id: { $ne: userId } // Exclude the current user
     });
     return users;
 }

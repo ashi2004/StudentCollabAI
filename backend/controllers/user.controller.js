@@ -2,6 +2,8 @@ import userModel from '../models/user.model.js';
 import * as userService from '../services/user.service.js';
 import { validationResult } from 'express-validator';
 import redisClient from '../services/redis.service.js';
+
+//register and createUser controller
 export const createUserController = async (req, res) => {
 
     const errors = validationResult(req);
@@ -14,7 +16,7 @@ export const createUserController = async (req, res) => {
 
         const token = await user.generateJWT();
 
-        delete user._doc.password;  // Remove password from the response
+        delete user._doc.password;// delete password from response
 
         res.status(201).json({ user, token });
     } catch (error) {
@@ -22,6 +24,7 @@ export const createUserController = async (req, res) => {
     }
 }
 
+//login controller
 export const loginController = async (req, res) => {
     const errors = validationResult(req);
 
@@ -33,7 +36,7 @@ export const loginController = async (req, res) => {
 
         const { email, password } = req.body;
 
-        const user = await userModel.findOne({ email }).select('+password');
+        const user = await userModel.findOne({ email }).select('+password');// explicitly select password field
 
         if (!user) {
             return res.status(401).json({
@@ -50,8 +53,9 @@ export const loginController = async (req, res) => {
         }
 
         const token = await user.generateJWT();
-        delete user._doc.password;  // Remove password from the response
-      
+
+        delete user._doc.password;// delete password from response
+
         res.status(200).json({ user, token });
 
 
@@ -63,7 +67,7 @@ export const loginController = async (req, res) => {
     }
 }
 
-
+//profile controller
 export const profileController = async (req, res) => {
 
     res.status(200).json({
@@ -72,12 +76,13 @@ export const profileController = async (req, res) => {
 
 }
 
+//logout controller
 export const logoutController = async (req, res) => {
     try {
 
-        const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
+        const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];// get token from cookie or header
 
-        redisClient.set(token, 'logout', 'EX', 60 * 60 * 24);
+        redisClient.set(token, 'logout', 'EX', 60 * 60 * 24);// set token to redis with 24 hours expiration time
 
         res.status(200).json({
             message: 'Logged out successfully'
@@ -90,6 +95,7 @@ export const logoutController = async (req, res) => {
     }
 }
 
+//get all users controller
 export const getAllUsersController = async (req, res) => {
     try {
 
