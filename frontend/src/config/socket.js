@@ -19,9 +19,23 @@ export const initializeSocket = (projectId) => {
 
 }
 
+// export const receiveMessage = (eventName, cb) => {
+//     socketInstance.on(eventName, cb);
+// }
+
 export const receiveMessage = (eventName, cb) => {
+    if (!socketInstance) return;
+
+    // Remove previous listener for this event
+    socketInstance.off(eventName);
+
+    // Add fresh listener
     socketInstance.on(eventName, cb);
 }
+
+
+
+
 
 export const sendMessage = (eventName, data) => {
     socketInstance.emit(eventName, data);

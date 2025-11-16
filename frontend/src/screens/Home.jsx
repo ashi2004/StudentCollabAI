@@ -39,9 +39,9 @@ const Home = () => {
     }, [])
 
     return (
-        <main className='p-4'>
+        <main className="min-h-screen w-full bg-gray-50 p-10">
                 
-            <div className="projects flex flex-wrap gap-3">    
+            <div className="projects flex flex-wrap gap-3 mt-10 ml-6">    
                 {/* New Project Button when clicked will open a modal to create new project */}        
                 <button
                     onClick={() => setIsModalOpen(true)}

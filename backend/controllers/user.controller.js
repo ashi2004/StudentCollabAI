@@ -82,7 +82,7 @@ export const logoutController = async (req, res) => {
 
         const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];// get token from cookie or header
 
-        redisClient.set(token, 'logout', 'EX', 60 * 60 * 24);// set token to redis with 24 hours expiration time
+        redisClient.set(token, 'logout', 'EX', 60 * 60 * 24*30);// set token to redis with 24 hours expiration time
 
         res.status(200).json({
             message: 'Logged out successfully'

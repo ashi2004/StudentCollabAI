@@ -7,6 +7,7 @@ const App = () => {
     <UserProvider>
       <AppRoutes />
   </UserProvider>
+
   )
 }
 

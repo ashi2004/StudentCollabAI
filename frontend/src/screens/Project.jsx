@@ -5,7 +5,7 @@ import axios from '../config/axios'
 import { initializeSocket, receiveMessage, sendMessage } from '../config/socket'
 import Markdown from 'markdown-to-jsx'
 import hljs from 'highlight.js';
-import { getWebContainer } from '../config/webContainer'
+import { getWebContainer } from '../config/webcontainer'
 
 
 function SyntaxHighlightedCode(props) {
@@ -113,37 +113,54 @@ const Project = () => {
 
         initializeSocket(project._id)
 
-        if (!webContainer) {
-            getWebContainer().then(container => {
-                setWebContainer(container)
-                console.log("container started")
-            })
+        // if (!webContainer) {
+        //     getWebContainer().then(container => {
+        //         setWebContainer(container)
+        //         console.log("container started")
+        //     })
+        // }
+
+        
+    const messageHandler = (data) => {
+        console.log("Received:", data);
+
+        if (data.sender._id === 'ai') {
+            const message = JSON.parse(data.message);
+
+            webContainer?.mount(message.fileTree);
+
+            if (message.fileTree) {
+                setFileTree(message.fileTree || {});
+            }
         }
 
+        setMessages(prev => [...prev, data]);
+    };
 
-        receiveMessage('project-message', data => {
+        receiveMessage('project-message', messageHandler);
+        // receiveMessage('project-message', data => {
 
-            console.log(data)
+        //     console.log(data)
             
-            if (data.sender._id == 'ai') {
+        //     if (data.sender._id == 'ai') {
 
 
-                const message = JSON.parse(data.message)
+        //         const message = JSON.parse(data.message)
 
-                console.log(message)
+        //         console.log(message)
 
-                webContainer?.mount(message.fileTree)
+        //         webContainer?.mount(message.fileTree)
 
-                if (message.fileTree) {
-                    setFileTree(message.fileTree || {})
-                }
-                setMessages(prevMessages => [ ...prevMessages, data ]) // Update messages state
-            } else {
+        //         if (message.fileTree) {
+        //             setFileTree(message.fileTree || {})
+        //         }
+        //         setMessages(prevMessages => [ ...prevMessages, data ]) // Update messages state
+        //     } else {
 
 
-                setMessages(prevMessages => [ ...prevMessages, data ]) // Update messages state
-            }
-        })
+        //         setMessages(prevMessages => [ ...prevMessages, data ]) // Update messages state
+        //     }
+        // })
 
 
         axios.get(`/projects/get-project/${location.state.project._id}`).then(res => {
@@ -163,6 +180,13 @@ const Project = () => {
             console.log(err)
 
         })
+    //      return () => {
+    //     window.socket?.off('project-message', messageHandler);
+    // };
+    return () => {
+    socketInstance?.off('project-message');
+};
+
 
     }, [])
 
@@ -202,13 +226,27 @@ const Project = () => {
                         ref={messageBox}
                         className="message-box p-1 flex-grow flex flex-col gap-1 overflow-auto max-h-full scrollbar-hide">
                         {messages.map((msg, index) => (
-                            <div key={index} className={`${msg.sender._id === 'ai' ? 'max-w-80' : 'max-w-52'} ${msg.sender._id == user._id.toString() && 'ml-auto'}  message flex flex-col p-2 bg-slate-50 w-fit rounded-md`}>
-                                <small className='opacity-65 text-xs'>{msg.sender.email}</small>
-                                <div className='text-sm'>
+                            // <div key={index} className={`${msg.sender._id === 'ai' ? 'max-w-80' : 'max-w-52'} ${msg.sender._id == user._id.toString() && 'ml-auto'}  message flex flex-col p-2 bg-slate-50 w-fit rounded-md`}>
+                               <div
+    key={index}
+    className={`
+      ${msg.sender._id === user._id.toString() ? 'self-end' : 'self-start'}
+      message flex flex-col p-2 bg-slate-50 w-fit max-w-80 rounded-md
+    `}
+  >
+                            <small className='opacity-65 text-xs'>{msg.sender.email}</small>
+                                {/* <div className='text-sm'>
                                     {msg.sender._id === 'ai' ?
                                         WriteAiMessage(msg.message)
                                         : <p>{msg.message}</p>}
-                                </div>
+                                </div> */}
+                                <div className='text-sm break-words whitespace-pre-wrap'>
+    {msg.sender._id === 'ai'
+        ? WriteAiMessage(msg.message)
+        : <p className="break-words whitespace-pre-wrap">{msg.message}</p>
+    }
+</div>
+
                             </div>
                         ))}
                     </div>
