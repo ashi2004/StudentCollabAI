@@ -224,7 +224,7 @@ const Project = () => {
 
                     <div
                         ref={messageBox}
-                        className="message-box p-1 flex-grow flex flex-col gap-1 overflow-auto max-h-full scrollbar-hide">
+                        className="message-box p-1 flex-grow flex flex-col gap-1 overflow-auto max-h-full scrollbar-hide pb-16">
                         {messages.map((msg, index) => (
                             // <div key={index} className={`${msg.sender._id === 'ai' ? 'max-w-80' : 'max-w-52'} ${msg.sender._id == user._id.toString() && 'ml-auto'}  message flex flex-col p-2 bg-slate-50 w-fit rounded-md`}>
                                <div
@@ -251,7 +251,7 @@ const Project = () => {
                         ))}
                     </div>
 
-                    <div className="inputField w-full flex absolute bottom-0">
+                    <div className="inputField w-full flex absolute bottom-0 bg-slate-100 p-2">
                         <input
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
