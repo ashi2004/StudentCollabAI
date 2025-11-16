@@ -34,7 +34,8 @@ const Project = () => {
     const [ project, setProject ] = useState(location.state.project)
     const [ message, setMessage ] = useState('')
     const { user } = useContext(UserContext)
-    const messageBox = React.createRef()
+    // const messageBox = React.createRef()
+    const messageBox = useRef(null)
 
     const [ users, setUsers ] = useState([])
     const [ messages, setMessages ] = useState([]) // New state variable for messages
@@ -190,6 +191,12 @@ const Project = () => {
 
     }, [])
 
+    useEffect(() => {
+    if (messageBox.current) {
+        messageBox.current.scrollTop = messageBox.current.scrollHeight;
+    }
+}, [messages]);
+
     function saveFileTree(ft) {
         axios.put('/projects/update-file-tree', {
             projectId: project._id,
@@ -211,7 +218,7 @@ const Project = () => {
     return (
         <main className='h-screen w-screen flex'>
             <section className="left relative flex flex-col h-screen min-w-96 bg-slate-300">
-                <header className='flex justify-between items-center p-2 px-4 w-full bg-slate-100 absolute z-10 top-0'>
+                <header className='flex justify-between items-center p-2 px-4 w-full bg-slate-100'>
                     <button className='flex gap-2' onClick={() => setIsModalOpen(true)}>
                         <i className="ri-add-fill mr-1"></i>
                         <p>Add collaborator</p>
@@ -220,11 +227,11 @@ const Project = () => {
                         <i className="ri-group-fill"></i>
                     </button>
                 </header>
-                <div className="conversation-area pt-14 pb-10 flex-grow flex flex-col h-full relative">
+                <div className="conversation-area flex-grow flex flex-col h-full">
 
                     <div
                         ref={messageBox}
-                        className="message-box p-1 flex-grow flex flex-col gap-1 overflow-auto max-h-full scrollbar-hide pb-16">
+                        className="message-box p-1 flex-grow flex flex-col gap-1 overflow-auto scrollbar-hide">
                         {messages.map((msg, index) => (
                             // <div key={index} className={`${msg.sender._id === 'ai' ? 'max-w-80' : 'max-w-52'} ${msg.sender._id == user._id.toString() && 'ml-auto'}  message flex flex-col p-2 bg-slate-50 w-fit rounded-md`}>
                                <div
@@ -251,7 +258,7 @@ const Project = () => {
                         ))}
                     </div>
 
-                    <div className="inputField w-full flex absolute bottom-0 bg-slate-100 p-2">
+                    <div className="inputField w-full flex bg-slate-100 p-2">
                         <input
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
