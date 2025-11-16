@@ -217,7 +217,7 @@ const Project = () => {
 
     return (
         <main className='h-screen w-screen flex'>
-            <section className="left relative flex flex-col h-screen min-w-96 bg-slate-300">
+            <section className="left relative flex flex-col h-screen w-[35%] min-w-[22rem] bg-slate-300 px-4">
                 <header className='flex justify-between items-center p-2 px-4 w-full bg-slate-100'>
                     <button className='flex gap-2' onClick={() => setIsModalOpen(true)}>
                         <i className="ri-add-fill mr-1"></i>
@@ -227,21 +227,21 @@ const Project = () => {
                         <i className="ri-group-fill"></i>
                     </button>
                 </header>
-                <div className="conversation-area flex-grow flex flex-col h-full">
+                <div className="conversation-area flex-grow flex flex-col h-full pt-4">
 
                     <div
                         ref={messageBox}
-                        className="message-box p-1 flex-grow flex flex-col gap-1 overflow-auto scrollbar-hide">
+                        className="message-box flex-grow flex flex-col gap-3 overflow-auto scrollbar-hide py-3">
                         {messages.map((msg, index) => (
                             // <div key={index} className={`${msg.sender._id === 'ai' ? 'max-w-80' : 'max-w-52'} ${msg.sender._id == user._id.toString() && 'ml-auto'}  message flex flex-col p-2 bg-slate-50 w-fit rounded-md`}>
                                <div
     key={index}
     className={`
       ${msg.sender._id === user._id.toString() ? 'self-end' : 'self-start'}
-      message flex flex-col p-2 bg-slate-50 w-fit max-w-80 rounded-md
+   bg-white p-3 rounded-lg shadow-sm max-w-[75%]
     `}
   >
-                            <small className='opacity-65 text-xs'>{msg.sender.email}</small>
+                            <small className='text-xs text-gray-500'>{msg.sender.email}</small>
                                 {/* <div className='text-sm'>
                                     {msg.sender._id === 'ai' ?
                                         WriteAiMessage(msg.message)
@@ -250,7 +250,7 @@ const Project = () => {
                                 <div className='text-sm break-words whitespace-pre-wrap'>
     {msg.sender._id === 'ai'
         ? WriteAiMessage(msg.message)
-        : <p className="break-words whitespace-pre-wrap">{msg.message}</p>
+        : <p className="text-sm break-words whitespace-pre-wrap">{msg.message}</p>
     }
 </div>
 
@@ -258,15 +258,31 @@ const Project = () => {
                         ))}
                     </div>
 
-                    <div className="inputField w-full flex bg-slate-100 p-2">
+                    {/* <div className="inputField w-full flex items-center gap-2 bg-slate-100 p-3 border-t border-slate-300">
                         <input
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            className='p-2 px-4 border-none outline-none flex-grow' type="text" placeholder='Enter message' />
+                            className='flex-grow p-2 px-3 bg-white border border-slate-300 rounded-md outline-none' type="text" placeholder='Enter message' />
                         <button
                             onClick={send}
-                            className='px-5 bg-slate-950 text-white'><i className="ri-send-plane-fill"></i></button>
-                    </div>
+                            className='p-3 bg-slate-900 text-white rounded-md'><i className="ri-send-plane-fill"></i></button>
+                    </div> */}
+                  <div className="inputField w-full flex items-center gap-2 bg-gray-100 p-3 border-t border-gray-300">
+    <input
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        className="flex-grow p-2 px-3 bg-white border border-gray-300 rounded-md outline-none"
+        placeholder="Enter message"
+    />
+    <button
+        onClick={send}
+        className="p-2 px-3 bg-slate-900 text-white rounded-md"
+    >
+        <i className="ri-send-plane-fill"></i>
+    </button>
+</div>
+
+
                 </div>
                 <div className={`sidePanel w-full h-full flex flex-col gap-2 bg-slate-50 absolute transition-all ${isSidePanelOpen ? 'translate-x-0' : '-translate-x-full'} top-0`}>
                     <header className='flex justify-between items-center px-4 p-2 bg-slate-200'>
