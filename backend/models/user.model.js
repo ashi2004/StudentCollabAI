@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
 
     password: {
         type: String,
-        select: false,
+        select: false,// do not return password field by default
     }
 })
 

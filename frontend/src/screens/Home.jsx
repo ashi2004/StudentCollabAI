@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
 
-    const { user } = useContext(UserContext)
+    const { user } = useContext(UserContext)//get logged in user details from context
     const [ isModalOpen, setIsModalOpen ] = useState(false) //popup or dialog box state
     const [ projectName, setProjectName ] = useState(null)
     const [ project, setProject ] = useState([])

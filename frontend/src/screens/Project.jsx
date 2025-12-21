@@ -11,7 +11,7 @@ function SyntaxHighlightedCode(props) {
     const ref = useRef(null)
 
     React.useEffect(() => {
-        if (ref.current && props.className?.includes('lang-') && window.hljs) {
+        if (ref.current && props.className?.includes('lang-') && window.hljs) {    
             window.hljs.highlightElement(ref.current)
             ref.current.removeAttribute('data-highlighted')
         }
@@ -21,20 +21,25 @@ function SyntaxHighlightedCode(props) {
 }
 
 
-//SAFE JSON PARSER (fixes ALL errors)
+//SAFE JSON PARSER
 function safeJSONParse(str) {
     try {
         if (!str || typeof str !== "string") return { text: "" };
 
         let cleaned = str
-            .replace(/```json/g, "")
-            .replace(/```/g, "")
-            .trim();
+            .replace(/```json/g, "") // Remove ```json markers
+            .replace(/```/g, "")     // Remove ``` markers
+            .trim();                 // Trim whitespace
+ 
+        const match = cleaned.match(/\{[\s\S]*\}$/);   
+        //this line is using a regular expression to search for a substring within the cleaned 
+        // string that starts with an opening curly brace '{' and ends with a closing curly brace '}'. 
+        // The [\s\S]* part matches any characters (including newlines) in between the braces. 
+        // The $ at the end ensures that this match occurs at the end of the string. 
+        // Essentially, this line is trying to isolate a JSON object from the end of the cleaned string.
+        if (!match) return { text: cleaned }; // If no JSON object found, return the whole cleaned string as text
 
-        const match = cleaned.match(/\{[\s\S]*\}$/);
-        if (!match) return { text: cleaned };
-
-        return JSON.parse(match[0]);
+        return JSON.parse(match[0]);// Parse and return the JSON object
 
     } catch (err) {
         console.error("safeJSONParse failed:", err, str);
@@ -52,8 +57,11 @@ const Project = () => {
     const [project, setProject] = useState(location.state.project)
     const [message, setMessage] = useState('')
     const { user } = useContext(UserContext)
-
+  
+    ///check this/////
     const messageBox = useRef(null)
+    ///////////
+
 
     const [users, setUsers] = useState([])
     const [messages, setMessages] = useState([])
@@ -93,10 +101,10 @@ const Project = () => {
 
         return (
             <div className='overflow-auto bg-slate-950 text-white rounded-sm p-2'>
-                <Markdown
-                    children={parsed.text}
+                <Markdown                  // Use markdown-to-jsx to parse markdown
+                    children={parsed.text} // Render markdown text
                     options={{
-                        overrides: { code: SyntaxHighlightedCode },
+                        overrides: { code: SyntaxHighlightedCode }, // Syntax highlight code blocks
                     }}
                 />
             </div>
@@ -108,10 +116,12 @@ const Project = () => {
     useEffect(() => {
 
         initializeSocket(project._id)
-
-        getWebContainer().then(container => {
+        if(!webContainer){
+           getWebContainer().then(container => {
             setWebContainer(container)
+            console.log("container started")
         })
+        }
 
         //MESSAGE HANDLER
         const messageHandler = (data) => {
@@ -145,7 +155,7 @@ const Project = () => {
                 setFileTree(res.data.project.fileTree || {})
             })
 
-        axios.get('/users/all')
+         axios.get('/users/all')
             .then(res => setUsers(res.data.users))
             .catch(err => console.log(err))
 
@@ -169,13 +179,14 @@ const Project = () => {
 
 
     const send = () => {
+        // Send message to server
         sendMessage("project-message", {
             message,
             sender: user
         });
-
-        setMessages(prev => [...prev, { sender: user, message }]);
-        setMessage("");
+        
+        setMessages(prev => [...prev, { sender: user, message }]); // Optimistic UI update
+        setMessage(""); // Clear input field
     };
 
 
@@ -216,7 +227,7 @@ const Project = () => {
                             <div
                                 key={index}
                                 className={`
-                                    ${msg.sender._id === user._id.toString() ? 'self-end' : 'self-start'}
+                                    ${msg.sender._id === user._id.toString() ? 'self-end' : 'self-start'} 
                                     bg-white p-3 rounded-lg shadow-sm max-w-[75%]
                                 `}
                             >
@@ -266,7 +277,9 @@ const Project = () => {
 
                     <div className="users flex flex-col gap-2">
                         {project.users && project.users.map(usr => (
-                            <div className="user cursor-pointer hover:bg-slate-200 p-2 flex gap-2 items-center">
+                            <div 
+                            key={usr._id}
+                            className="user cursor-pointer hover:bg-slate-200 p-2 flex gap-2 items-center">
                                 <div className='aspect-square rounded-full p-5 bg-slate-600 text-white'>
                                     <i className="ri-user-fill"></i>
                                 </div>
