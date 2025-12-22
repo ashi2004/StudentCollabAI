@@ -14,7 +14,7 @@ const port = process.env.PORT || 8080;
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-         origin: true,
+         origin: "https://student-collab-ai.vercel.app",
          credentials: true
         // origin: '*'
     }
