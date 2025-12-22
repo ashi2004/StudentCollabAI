@@ -14,7 +14,7 @@ connect();//Connects to the database
 const app = express();//Creates an Express application instance that serves as the main component for handling HTTP requests and responses.
 // app.use(cors());
 app.use(cors({
-  origin: "https://YOUR_FRONTEND_URL.vercel.app",
+  origin: true,
   credentials: true
 }));
 app.use(morgan('dev'));

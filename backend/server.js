@@ -14,7 +14,7 @@ const port = process.env.PORT || 8080;
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-         origin: "https://YOUR_FRONTEND_URL.vercel.app",
+         origin: true,
          credentials: true
         // origin: '*'
     }
