@@ -200,42 +200,42 @@ const Project = () => {
 
 
     return (
-        <main className='h-screen w-screen flex'>
+        <main className='h-screen w-screen flex bg-[#0a0a0f]'>
 
-            {/* LEFT PANEL */}
-            <section className="left relative flex flex-col h-screen w-[35%] min-w-[22rem] bg-slate-300 px-4">
-                <header className='flex justify-between items-center p-2 px-4 w-full bg-slate-100'>
-                    <button className='flex gap-2' onClick={() => setIsModalOpen(true)}>
-                        <i className="ri-add-fill mr-1"></i>
-                        <p>Add collaborator</p>
+            {/* LEFT PANEL - Chat */}
+            <section className="left relative flex flex-col h-screen w-[35%] min-w-[22rem] bg-[#13131a] border-r border-gray-800/50">
+                <header className='flex justify-between items-center p-3 px-4 w-full bg-[#0a0a0f] border-b border-gray-800/50'>
+                    <button className='flex items-center gap-2 px-3 py-2 bg-[#6D54B6]/10 border border-[#6D54B6]/30 rounded-lg text-[#6D54B6] hover:bg-[#6D54B6]/20 transition-all text-sm' onClick={() => setIsModalOpen(true)}>
+                        <i className="ri-user-add-line"></i>
+                        <span>Add collaborator</span>
                     </button>
 
-                    <button onClick={() => setIsSidePanelOpen(!isSidePanelOpen)} className='p-2'>
+                    <button onClick={() => setIsSidePanelOpen(!isSidePanelOpen)} className='p-2 px-3 bg-gray-800/50 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-all'>
                         <i className="ri-group-fill"></i>
                     </button>
                 </header>
 
 
                 {/* CHAT */}
-                <div className="conversation-area flex-grow flex flex-col h-full pt-4">
+                <div className="conversation-area flex-grow flex flex-col h-full">
 
                     <div
                         ref={messageBox}
-                        className="message-box flex-grow flex flex-col gap-3 overflow-auto scrollbar-hide py-3"
+                        className="message-box flex-grow flex flex-col gap-3 overflow-auto scrollbar-hide p-4"
                     >
                         {messages.map((msg, index) => (
                             <div
                                 key={index}
                                 className={`
-                                    ${msg.sender._id === user._id.toString() ? 'self-end' : 'self-start'} 
-                                    bg-white p-3 rounded-lg shadow-sm max-w-[75%]
+                                    ${msg.sender._id === user._id.toString() ? 'self-end bg-[#6D54B6]' : 'self-start bg-[#1a1a24]'} 
+                                    p-3 px-4 rounded-2xl shadow-sm max-w-[75%] ${msg.sender._id === user._id.toString() ? 'rounded-br-md' : 'rounded-bl-md'}
                                 `}
                             >
-                                <small className='text-xs text-gray-500'>
+                                <small className={`text-xs ${msg.sender._id === user._id.toString() ? 'text-purple-200' : 'text-gray-500'}`}>
                                     {msg.sender.email}
                                 </small>
 
-                                <div className='text-sm break-words whitespace-pre-wrap'>
+                                <div className={`text-sm break-words whitespace-pre-wrap ${msg.sender._id === user._id.toString() ? 'text-white' : 'text-gray-300'}`}>
                                     {msg.sender._id === 'ai'
                                         ? WriteAiMessage(msg.message)
                                         : <p>{msg.message}</p>}
@@ -246,17 +246,18 @@ const Project = () => {
 
 
                     {/* INPUT FIELD */}
-                    <div className="inputField w-full flex items-center gap-2 bg-gray-100 p-3 border-t border-gray-300">
+                    <div className="inputField w-full flex items-center gap-2 bg-[#0a0a0f] p-3 border-t border-gray-800/50">
                         <input
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            className="flex-grow p-2 px-3 bg-white border border-gray-300 rounded-md outline-none"
-                            placeholder="Enter message"
+                            onKeyDown={(e) => e.key === 'Enter' && send()}
+                            className="flex-grow p-3 px-4 bg-[#1a1a24] border border-gray-800 rounded-xl text-white placeholder-gray-500 outline-none focus:border-[#6D54B6]/50 transition-all"
+                            placeholder="Type a message..."
                         />
 
                         <button
                             onClick={send}
-                            className="p-2 px-3 bg-slate-900 text-white rounded-md"
+                            className="p-3 px-4 bg-[#6D54B6] hover:bg-[#5d47a3] text-white rounded-xl transition-all shadow-lg shadow-[#6D54B6]/25"
                         >
                             <i className="ri-send-plane-fill"></i>
                         </button>
@@ -266,24 +267,24 @@ const Project = () => {
 
 
                 {/* COLLABORATORS PANEL */}
-                <div className={`sidePanel w-full h-full flex flex-col gap-2 bg-slate-50 absolute transition-all ${isSidePanelOpen ? 'translate-x-0' : '-translate-x-full'} top-0`}>
-                    <header className='flex justify-between items-center px-4 p-2 bg-slate-200'>
-                        <h1 className='font-semibold text-lg'>Collaborators</h1>
+                <div className={`sidePanel w-full h-full flex flex-col gap-2 bg-[#0a0a0f] absolute transition-all ${isSidePanelOpen ? 'translate-x-0' : '-translate-x-full'} top-0 left-0 z-10`}>
+                    <header className='flex justify-between items-center px-4 p-3 bg-[#13131a] border-b border-gray-800/50'>
+                        <h1 className='font-semibold text-lg text-white'>Collaborators</h1>
 
-                        <button onClick={() => setIsSidePanelOpen(!isSidePanelOpen)} className='p-2'>
+                        <button onClick={() => setIsSidePanelOpen(!isSidePanelOpen)} className='p-2 px-3 bg-gray-800/50 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-all'>
                             <i className="ri-close-fill"></i>
                         </button>
                     </header>
 
-                    <div className="users flex flex-col gap-2">
+                    <div className="users flex flex-col gap-1 p-2">
                         {project.users && project.users.map(usr => (
                             <div 
                             key={usr._id}
-                            className="user cursor-pointer hover:bg-slate-200 p-2 flex gap-2 items-center">
-                                <div className='aspect-square rounded-full p-5 bg-slate-600 text-white'>
-                                    <i className="ri-user-fill"></i>
+                            className="user cursor-pointer hover:bg-[#1a1a24] p-3 rounded-xl flex gap-3 items-center transition-all">
+                                <div className='w-10 h-10 rounded-xl bg-[#6D54B6] text-white flex items-center justify-center font-semibold'>
+                                    {usr.email?.[0]?.toUpperCase() || 'U'}
                                 </div>
-                                <h1 className='font-semibold text-lg'>{usr.email}</h1>
+                                <h1 className='text-gray-300'>{usr.email}</h1>
                             </div>
                         ))}
                     </div>
@@ -293,10 +294,13 @@ const Project = () => {
 
 
             {/* RIGHT SIDE – EXPLORER + EDITOR */}
-                        <section className="right bg-red-50 flex-grow h-full flex">
+            <section className="right bg-[#0a0a0f] flex-grow h-full flex">
 
-                <div className="explorer h-full max-w-64 min-w-52 bg-slate-200">
-                    <div className="file-tree w-full">
+                <div className="explorer h-full max-w-64 min-w-52 bg-[#13131a] border-r border-gray-800/50">
+                    <div className="p-3 border-b border-gray-800/50">
+                        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Explorer</h2>
+                    </div>
+                    <div className="file-tree w-full p-2">
                         {
                             Object.keys(fileTree).map((file, index) => (
                                 <button
@@ -305,10 +309,9 @@ const Project = () => {
                                         setCurrentFile(file)
                                         setOpenFiles([ ...new Set([ ...openFiles, file ]) ])
                                     }}
-                                    className="tree-element cursor-pointer p-2 px-4 flex items-center gap-2 bg-slate-300 w-full">
-                                    <p
-                                        className='font-semibold text-lg'
-                                    >{file}</p>
+                                    className={`tree-element cursor-pointer p-2 px-3 flex items-center gap-2 w-full rounded-lg transition-all text-left ${currentFile === file ? 'bg-[#6D54B6]/20 text-[#6D54B6]' : 'text-gray-400 hover:bg-[#1a1a24] hover:text-white'}`}>
+                                    <i className="ri-javascript-line text-yellow-400"></i>
+                                    <p className='text-sm'>{file}</p>
                                 </button>))
 
                         }
@@ -319,7 +322,7 @@ const Project = () => {
 
                 <div className="code-editor flex flex-col flex-grow h-full shrink">
 
-                    <div className="top flex justify-between w-full">
+                    <div className="top flex justify-between w-full bg-[#13131a] border-b border-gray-800/50">
 
                         <div className="files flex">
                             {
@@ -327,16 +330,14 @@ const Project = () => {
                                     <button
                                         key={index}
                                         onClick={() => setCurrentFile(file)}
-                                        className={`open-file cursor-pointer p-2 px-4 flex items-center w-fit gap-2 bg-slate-300 ${currentFile === file ? 'bg-slate-400' : ''}`}>
-                                        <p
-                                            className='font-semibold text-lg'
-                                        >{file}</p>
+                                        className={`open-file cursor-pointer p-2 px-4 flex items-center gap-2 border-r border-gray-800/50 text-sm transition-all ${currentFile === file ? 'bg-[#0a0a0f] text-white border-t-2 border-t-[#6D54B6]' : 'text-gray-500 hover:text-white'}`}>
+                                        <p>{file}</p>
                                     </button>
                                 ))
                             }
                         </div>
 
-                        <div className="actions flex gap-2">
+                        <div className="actions flex gap-2 p-2">
                             <button
                                 onClick={async () => {
                                     await webContainer.mount(fileTree)
@@ -372,9 +373,10 @@ const Project = () => {
                                     })
 
                                 }}
-                                className='p-2 px-4 bg-slate-300 text-white'
+                                className='flex items-center gap-2 px-4 py-1.5 bg-[#6D54B6] hover:bg-[#5d47a3] text-white rounded-lg text-sm transition-all shadow-lg shadow-[#6D54B6]/25'
                             >
-                                run
+                                <i className="ri-play-fill"></i>
+                                Run
                             </button>
 
 
@@ -383,7 +385,7 @@ const Project = () => {
                     <div className="bottom flex flex-grow max-w-full shrink overflow-auto">
                         {
                             fileTree[ currentFile ] && (
-                                <div className="code-editor-area h-full overflow-auto flex-grow bg-slate-50">
+                                <div className="code-editor-area h-full overflow-auto flex-grow bg-[#0a0a0f]">
                                     <pre
                                         className="hljs h-full">
                                         <code
@@ -419,13 +421,13 @@ const Project = () => {
                 </div>
 
                 {iframeUrl && webContainer &&
-                    (<div className="flex min-w-96 flex-col h-full">
-                        <div className="address-bar">
+                    (<div className="flex min-w-96 flex-col h-full border-l border-gray-800/50">
+                        <div className="address-bar bg-[#13131a] border-b border-gray-800/50">
                             <input type="text"
                                 onChange={(e) => setIframeUrl(e.target.value)}
-                                value={iframeUrl} className="w-full p-2 px-4 bg-slate-200" />
+                                value={iframeUrl} className="w-full p-2 px-4 bg-[#1a1a24] text-gray-300 text-sm outline-none focus:bg-[#1e1e28] transition-all" />
                         </div>
-                        <iframe src={iframeUrl} className="w-full h-full"></iframe>
+                        <iframe src={iframeUrl} className="w-full h-full bg-white"></iframe>
                     </div>)
                 }
 
@@ -435,35 +437,38 @@ const Project = () => {
 
             {/* ADD USER MODAL */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-4 rounded-md w-96 max-w-full relative">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div className="bg-[#13131a] p-6 rounded-2xl w-96 max-w-full relative border border-gray-800/50 shadow-2xl shadow-[#6D54B6]/20 mx-4">
 
                         <header className='flex justify-between items-center mb-4'>
-                            <h2 className='text-xl font-semibold'>Select User</h2>
-                            <button onClick={() => setIsModalOpen(false)} className='p-2'>
+                            <h2 className='text-xl font-semibold text-white'>Add Collaborators</h2>
+                            <button onClick={() => setIsModalOpen(false)} className='w-8 h-8 rounded-lg bg-gray-800/50 flex items-center justify-center text-gray-500 hover:text-white hover:bg-gray-700 transition-all'>
                                 <i className="ri-close-fill"></i>
                             </button>
                         </header>
 
-                        <div className="users-list flex flex-col gap-2 mb-16 max-h-96 overflow-auto">
+                        <div className="users-list flex flex-col gap-1 mb-20 max-h-80 overflow-auto">
                             {users.map(u => (
                                 <div
                                     key={u._id}
-                                    className={`user p-2 flex gap-2 items-center cursor-pointer hover:bg-slate-200 
-                                        ${selectedUserId.has(u._id) ? 'bg-slate-200' : ''}`}
+                                    className={`user p-3 flex gap-3 items-center cursor-pointer rounded-xl transition-all
+                                        ${selectedUserId.has(u._id) ? 'bg-[#6D54B6]/20 border border-[#6D54B6]/50' : 'hover:bg-[#1a1a24] border border-transparent'}`}
                                     onClick={() => handleUserClick(u._id)}
                                 >
-                                    <div className='rounded-full p-5 bg-slate-600 text-white'>
-                                        <i className="ri-user-fill"></i>
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-semibold ${selectedUserId.has(u._id) ? 'bg-[#6D54B6] text-white' : 'bg-gray-800 text-gray-400'}`}>
+                                        {u.email?.[0]?.toUpperCase() || 'U'}
                                     </div>
-                                    <h1 className='font-semibold text-lg'>{u.email}</h1>
+                                    <h1 className={`text-sm ${selectedUserId.has(u._id) ? 'text-white' : 'text-gray-400'}`}>{u.email}</h1>
+                                    {selectedUserId.has(u._id) && (
+                                        <i className="ri-check-line ml-auto text-[#6D54B6]"></i>
+                                    )}
                                 </div>
                             ))}
                         </div>
 
                         <button
                             onClick={addCollaborators}
-                            className='absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-blue-600 text-white rounded-md'
+                            className='absolute bottom-4 left-4 right-4 px-4 py-3 bg-[#6D54B6] hover:bg-[#5d47a3] text-white rounded-xl font-medium transition-all shadow-lg shadow-[#6D54B6]/25'
                         >
                             Add Collaborators
                         </button>

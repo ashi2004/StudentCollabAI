@@ -13,9 +13,16 @@ connect();//Connects to the database
 
 const app = express();//Creates an Express application instance that serves as the main component for handling HTTP requests and responses.
 // app.use(cors());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://student-collab-ai.vercel.app"
+];
+
 app.use(cors({
   // origin: "https://student-collab-ai.vercel.app",
-  origin: ["http://localhost:5173", "https://student-collab-ai.vercel.app"],
+  // origin: ["http://localhost:5173", "https://student-collab-ai.vercel.app"],
+  origin: allowedOrigins,
   credentials: true
 }));
 app.use(morgan('dev'));
@@ -25,10 +32,10 @@ app.use(cookieParser());
 
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
-app.use("/ai", aiRoutes)
+app.use('/ai', aiRoutes)
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');      //This is a simple route that responds with "Hello World!" when accessed at the root URL ("/").
+  res.json({ status: 'ok', message: 'Collabify API is running' }); 
 });
 
 export default app;

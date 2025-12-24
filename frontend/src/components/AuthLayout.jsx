@@ -8,7 +8,7 @@ const slides = [
         title3: "Innovate.",
         description: "Build amazing projects with real-time collaboration, AI-powered assistance, and seamless team workflows.",
         image: "https://images.unsplash.com/photo-1607706189992-eae578626c86?q=80&w=2670&auto=format&fit=crop",
-        accent: "from-purple-400 to-purple-600"
+        accent: "from-[#FC9986] to-[#FFB4A2]"
     },
     {
         title1: "Create.",
@@ -16,7 +16,7 @@ const slides = [
         title3: "Build Fast.",
         description: "Instant code sharing, live editing, and AI suggestions to accelerate your development workflow.",
         image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2670&auto=format&fit=crop",
-        accent: "from-blue-400 to-cyan-500"
+        accent: "from-[#FC9986] to-[#FFCAB8]"
     },
     {
         title1: "Learn.",
@@ -24,7 +24,7 @@ const slides = [
         title3: "Succeed.",
         description: "Connect with fellow students, get AI-powered help, and turn your ideas into working projects.",
         image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2670&auto=format&fit=crop",
-        accent: "from-emerald-400 to-teal-500"
+        accent: "from-[#FFB4A2] to-[#FC9986]"
     }
 ];
 
@@ -42,8 +42,8 @@ const AuthLayout = ({ title, subtitle, linkText, linkTo, children, onSubmit, typ
     const slide = slides[currentSlide];
 
     return (
-        <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-6 md:p-8">
-            <div className="bg-[#13131a] rounded-[2rem] shadow-2xl shadow-purple-900/10 w-full max-w-[1100px] flex overflow-hidden min-h-[680px] border border-gray-800/50">
+    <div className="min-h-screen bg-gradient-to-br from-[#2a2228] via-[#1e1a1d] to-[#1a1618] flex items-center justify-center p-6 md:p-8">
+            <div className="bg-[#13131a] rounded-[2rem] shadow-2xl shadow-[#FC9986]/10 w-full max-w-[1100px] flex overflow-hidden min-h-[680px] border border-gray-800/50">
                 {/* Left Side - Image Carousel */}
                 <div className="hidden lg:flex w-[55%] relative bg-gradient-to-br from-gray-900 to-[#13131a] flex-col justify-end p-10 xl:p-14 text-white overflow-hidden">
                     {/* Background Image with transition */}
@@ -57,8 +57,8 @@ const AuthLayout = ({ title, subtitle, linkText, linkTo, children, onSubmit, typ
                     <div className="absolute inset-0 bg-gradient-to-r from-[#13131a]/70 to-transparent"></div>
                     
                     {/* Decorative elements */}
-                    <div className="absolute top-1/4 right-10 w-32 h-32 bg-purple-600/20 rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-1/3 left-10 w-24 h-24 bg-blue-600/10 rounded-full blur-2xl"></div>
+                    <div className="absolute top-1/4 right-10 w-32 h-32 bg-[#FC9986]/20 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-1/3 left-10 w-24 h-24 bg-[#FC9986]/10 rounded-full blur-2xl"></div>
 
                     {/* Slide Content with animation */}
                     <div className="relative z-10 mb-6">
@@ -98,8 +98,8 @@ const AuthLayout = ({ title, subtitle, linkText, linkTo, children, onSubmit, typ
                                     onClick={() => setCurrentSlide(index)}
                                     className={`h-1.5 rounded-full transition-all duration-300 ${
                                         index === currentSlide 
-                                            ? 'w-12 bg-gradient-to-r from-purple-500 to-purple-600' 
-                                            : 'w-3 bg-gray-700 hover:bg-purple-500/50'
+                                            ? 'w-12 bg-[#FC9986]' 
+                                            : 'w-3 bg-gray-700 hover:bg-[#FC9986]/50'
                                     }`}
                                 />
                             ))}
@@ -108,10 +108,10 @@ const AuthLayout = ({ title, subtitle, linkText, linkTo, children, onSubmit, typ
                     
                     {/* Logo */}
                     <div className="absolute top-8 left-8 xl:left-10 z-10 flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/25">
-                            <i className="ri-shining-fill text-white text-lg"></i>
+                        <div className="w-10 h-10 bg-[#FC9986] rounded-xl flex items-center justify-center shadow-lg shadow-[#FC9986]/25">
+                            <i className="ri-shining-fill text-[#1a1a24] text-lg"></i>
                         </div>
-                        <span className="text-xl xl:text-2xl font-semibold tracking-wide text-white">CollabAI</span>
+                        <span className="text-xl xl:text-2xl font-semibold tracking-wide text-white">Collabify</span>
                     </div>
                     
                     <Link to="/" className="absolute top-8 right-8 xl:right-10 z-10 bg-white/5 backdrop-blur-xl px-5 py-2.5 rounded-full text-sm font-medium hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-white/20 flex items-center gap-2 group">
@@ -125,16 +125,16 @@ const AuthLayout = ({ title, subtitle, linkText, linkTo, children, onSubmit, typ
             <div className="max-w-[380px] mx-auto w-full">
                 {/* Mobile Logo */}
                 <div className="lg:hidden flex items-center gap-3 mb-10">
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/25">
-                        <i className="ri-shining-fill text-white text-lg"></i>
+                    <div className="w-10 h-10 bg-[#FC9986] rounded-xl flex items-center justify-center shadow-lg shadow-[#FC9986]/25">
+                        <i className="ri-shining-fill text-[#1a1a24] text-lg"></i>
                     </div>
-                    <span className="text-xl font-semibold tracking-wide text-white">CollabAI</span>
+                    <span className="text-xl font-semibold tracking-wide text-white">Collabify</span>
                 </div>
 
                 <h2 className="text-3xl xl:text-4xl font-bold text-white mb-3 tracking-tight">{title}</h2>
                 <p className="text-gray-500 mb-8 text-base">
                     {subtitle}{' '}
-                    <Link to={linkTo} className="text-purple-400 hover:text-purple-300 font-medium transition-colors duration-200">{linkText}</Link>
+                    <Link to={linkTo} className="text-[#FC9986] hover:text-[#FFB4A2] font-medium transition-colors duration-200">{linkText}</Link>
                 </p>
 
                 <form onSubmit={onSubmit} className="space-y-5">
